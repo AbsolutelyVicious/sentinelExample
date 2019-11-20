@@ -1,7 +1,7 @@
 package com.example.sentinel.controller;
 
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
-import com.example.sentinel.service.FileDataSourceInit;
+import com.example.sentinel.config.FileDataSourceInit;
 import com.example.sentinel.service.SentinelRule;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

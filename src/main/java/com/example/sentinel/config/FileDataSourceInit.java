@@ -1,4 +1,4 @@
-package com.example.sentinel.service;
+package com.example.sentinel.config;
 
 import com.alibaba.csp.sentinel.command.handler.ModifyParamFlowRulesCommandHandler;
 import com.alibaba.csp.sentinel.datasource.*;
@@ -19,6 +19,7 @@ import com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.sentinel.common.CommonFile;
+import com.example.sentinel.service.SentinelRule;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
