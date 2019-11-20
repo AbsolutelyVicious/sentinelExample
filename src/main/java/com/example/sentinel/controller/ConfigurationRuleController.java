@@ -1,6 +1,7 @@
 package com.example.sentinel.controller;
 
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
+import com.example.sentinel.service.FileDataSourceInit;
 import com.example.sentinel.service.SentinelRule;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,11 @@ import java.util.List;
 public class ConfigurationRuleController {
 
     private final SentinelRule sentinelRule;
+    private final FileDataSourceInit fileDataSourceInit;
 
-    public ConfigurationRuleController(SentinelRule sentinelRule) {
+    public ConfigurationRuleController(SentinelRule sentinelRule, FileDataSourceInit fileDataSourceInit) {
         this.sentinelRule = sentinelRule;
+        this.fileDataSourceInit = fileDataSourceInit;
     }
 
     /**
@@ -32,7 +35,14 @@ public class ConfigurationRuleController {
     @PostMapping(value = {"/insertDegradeRule"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
     public Boolean insertDegradeRule(@RequestBody DegradeRule degradeRule) {
-        return sentinelRule.insertDegradeRule(degradeRule);
+        Boolean boo = sentinelRule.insertDegradeRule(degradeRule);
+        try {
+            //重新加载Sentinel规则
+            fileDataSourceInit.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return boo;
     }
 
     /**
