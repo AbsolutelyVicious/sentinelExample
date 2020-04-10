@@ -32,11 +32,14 @@ public class DegradeRuleTestController {
     @PostMapping(value = {"/insertUser"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST})
     public Boolean insertUser() {
-        User user = new User();
-        user.setUserId(MathUtil.judge(UUID.randomUUID().hashCode()));
-        user.setName("二狗子");
-        user.setAge(21);
-        user.setPassword(UUID.randomUUID().toString());
+
+        User user = User.builder()
+                .age(21)
+                .name("二狗子")
+                .password(UUID.randomUUID().toString())
+                .userId(MathUtil.judge(UUID.randomUUID().hashCode()))
+                .build();
+
         return degradeRuleTest.insertUser(user);
     }
 

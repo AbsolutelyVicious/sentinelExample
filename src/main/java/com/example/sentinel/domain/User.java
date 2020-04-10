@@ -1,5 +1,6 @@
 package com.example.sentinel.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  * @desc
  */
 @Data
+@Builder
 public class User {
 
     private Integer userId;

@@ -1,34 +1,18 @@
 package com.example.sentinel.config;
 
-import com.alibaba.csp.sentinel.command.handler.ModifyParamFlowRulesCommandHandler;
-import com.alibaba.csp.sentinel.datasource.*;
 import com.alibaba.csp.sentinel.init.InitFunc;
 import com.alibaba.csp.sentinel.property.DynamicSentinelProperty;
 import com.alibaba.csp.sentinel.property.SentinelProperty;
-import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
-import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRuleManager;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
-import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRuleManager;
 import com.alibaba.csp.sentinel.slots.system.SystemRule;
-import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
-import com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.example.sentinel.common.CommonFile;
 import com.example.sentinel.service.SentinelRule;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author: Denis
@@ -46,15 +30,21 @@ public class FileDataSourceInit implements InitFunc, InitializingBean {
         this.sentinelRule = sentinelRule;
     }
 
-    private static SentinelProperty<List<DegradeRule>> currentProperty = new DynamicSentinelProperty<>();
+    private static SentinelProperty<List<DegradeRule>> degradeCurrentProperty = new DynamicSentinelProperty<>();
+
+    private static SentinelProperty<List<FlowRule>> flowCurrentProperty = new DynamicSentinelProperty<>();
+
+    private static SentinelProperty<List<ParamFlowRule>> paramFlowRuleCurrentProperty = new DynamicSentinelProperty<>();
+
+    private static SentinelProperty<List<SystemRule>> systemRuleCurrentProperty = new DynamicSentinelProperty<>();
 
     @Override
     public void init() throws Exception {
 
         //降级规则注册
         List<DegradeRule> degradeRule = sentinelRule.getDegradeRule();
-        currentProperty.updateValue(degradeRule);
-        DegradeRuleManager.register2Property(currentProperty);
+        degradeCurrentProperty.updateValue(degradeRule);
+        DegradeRuleManager.register2Property(degradeCurrentProperty);
 
     }
 
